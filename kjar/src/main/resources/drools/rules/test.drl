@@ -1,0 +1,12 @@
+package drools.rules;
+
+import com.cor.backend.model.TestText;
+
+rule "Test rule"
+	when
+		$txt: TestText(text == "some test text")
+	then
+		$txt.setWorking(true);
+		update($txt);
+
+end
