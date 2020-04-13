@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.ts-u-display--flex {
+  display: flex;
+}
+
+.ts-u-justify--space-between {
+  justify-content: space-between;
+}
+
+.ts-u-margin-bottom--xs {
+  margin-bottom: 1em;
+}
+
+.ts-u-margin-top--md {
+  margin-top: 3em;
+}
+
