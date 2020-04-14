@@ -5,6 +5,7 @@ import { PlayerTestRoutingModule } from './player-test-routing.module';
 import { PlayerTestComponent } from './components/player-test/player-test.component';
 import { MatSelectModule, MatButtonModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,7 +15,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     PlayerTestRoutingModule,
     MatSelectModule,
     MatButtonModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class PlayerTestModule { }

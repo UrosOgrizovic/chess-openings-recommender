@@ -10,6 +10,9 @@ export class LandingComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if (localStorage.getItem('chosenMoves')) {
+      console.log(localStorage.getItem('chosenMoves'));
+    }
   }
 
 }

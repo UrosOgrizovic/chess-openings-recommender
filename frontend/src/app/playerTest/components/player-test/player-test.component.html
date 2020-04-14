@@ -1,14 +1,13 @@
 
-<img src="assets/positions/exf4-d5-Bc5.jpeg" style="margin: 10px 10px 10px 0px; float: left; height: 50%; width:50%; max-height: 720px; max-width: 720px;" id="currPos">
+<img src={{currImageSrc}} style="margin: 10px 10px 10px 0px; float: left; height: 50%; width:50%; max-height: 720px; max-width: 720px;" id="currPos">
 
 <div style="margin-left: 10px; left: 50%; width: 50%; top: 42%; -ms-transform: translateY(-50%); position: absolute; transform: translateY(-50%);">
     <h3>Which of the following moves would you play in this position?</h3>
     <mat-form-field>
-        <mat-label>Choose move</mat-label>
-        <mat-select>
-            <mat-option *ngFor="let move of moves" [value]="move">{{move}}</mat-option>
+        <mat-select [value]="currMoves[0]" id="moveSelect">
+            <mat-option *ngFor="let move of currMoves" [value]="move">{{move}}</mat-option>
         </mat-select>
     </mat-form-field>
     <br>
-    <button mat-raised-button color="primary">Next</button>
+    <button mat-raised-button color="primary" (click)="goToNextStep()" id="nextBtn">Next</button>
 </div>

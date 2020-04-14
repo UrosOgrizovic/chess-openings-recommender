@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { HomeModule } from './home/home.module';
 import { PlayerTestModule } from './playerTest/player-test.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { PlayerTestModule } from './playerTest/player-test.module';
     AppRoutingModule,
     HomeModule,
     CoreModule,
-    PlayerTestModule
+    PlayerTestModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
