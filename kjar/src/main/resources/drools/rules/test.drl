@@ -2,6 +2,8 @@ package drools.rules;
 
 import com.cor.backend.model.TestText;
 
+agenda-group "test"
+
 rule "Test rule"
 	when
 		$txt: TestText(text == "some test text")

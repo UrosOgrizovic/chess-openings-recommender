@@ -14,7 +14,9 @@ public class TestService {
 	
 	public TestText fireDroolsRules(TestText tt) {
 		KieSession kieSession = kieContainer.newKieSession();
+		kieSession.getAgenda().getAgendaGroup("test").setFocus();
 		kieSession.insert(tt);
+
 		kieSession.fireAllRules();
 		kieSession.dispose();
 		return tt;
