@@ -1,0 +1,117 @@
+package drools.rules;
+
+import com.cor.backend.model.Player;
+import com.cor.backend.model.enums.PlayerType;
+
+
+agenda-group "player-type"
+
+rule "Determine player type" salience -1
+    no-loop
+    when
+        $p: Player()
+    then
+        $p.setPlayerType(PlayerType.valueOf($p.getMaxCount()));
+        update($p);
+end
+
+rule "Bc5 first move increment aggressive"
+    no-loop
+    when
+        $p: Player("Bc5" == chosenMoves.get(0));
+    then
+        $p.setAggressiveCount($p.getAggressiveCount() + 1);
+        update($p);
+end
+
+rule "c3 second move increment aggressive"
+    no-loop
+    when
+        $p: Player("c3" == chosenMoves.get(1));
+    then
+        $p.setAggressiveCount($p.getAggressiveCount() + 1);
+        update($p);
+
+end
+
+rule "Ng5 third move increment aggressive"
+    no-loop
+    when
+        $p: Player("Ng5" == chosenMoves.get(2));
+    then
+        $p.setAggressiveCount($p.getAggressiveCount() + 1);
+        update($p);
+
+end
+
+rule "d5 first move increment tactical"
+    no-loop
+    when
+        $p: Player("Ng5" == chosenMoves.get(0));
+    then
+        $p.setTacticalCount($p.getTacticalCount() + 1);
+        update($p);
+end
+
+rule "O-O third move increment tactical"
+    no-loop
+    when
+        $p: Player("O-O" == chosenMoves.get(2));
+    then
+        $p.setTacticalCount($p.getTacticalCount() + 1);
+        update($p);
+end
+
+rule "Qa4 fourth move increment tactical"
+    no-loop
+    when
+        $p: Player("Qa4" == chosenMoves.get(3));
+    then
+        $p.setTacticalCount($p.getTacticalCount() + 1);
+        update($p);
+end
+
+rule "Qxd4 second move increment defensive"
+    no-loop
+    when
+        $p: Player("Qxd4" == chosenMoves.get(1));
+    then
+        $p.setDefensiveCount($p.getDefensiveCount() + 1);
+        update($p);
+end
+
+rule "b4 fourth move increment defensive"
+    no-loop
+    when
+        $p: Player("b4" == chosenMoves.get(3));
+    then
+        $p.setDefensiveCount($p.getDefensiveCount() + 1);
+        update($p);
+end
+
+rule "exf4 first move increment positional"
+    no-loop
+    when
+        $p: Player("exf4" == chosenMoves.get(0));
+    then
+        $p.setPositionalCount($p.getPositionalCount() + 1);
+        update($p);
+end
+
+rule "Nf3 second move increment positional"
+    no-loop
+    when
+        $p: Player("Nf3" == chosenMoves.get(1));
+    then
+        $p.setPositionalCount($p.getPositionalCount() + 1);
+        update($p);
+end
+
+rule "d3 third move increment positional"
+    no-loop
+    when
+        $p: Player("d3" == chosenMoves.get(2));
+    then
+        $p.setPositionalCount($p.getPositionalCount() + 1);
+        update($p);
+end
