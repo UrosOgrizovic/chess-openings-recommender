@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.xml.ws.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,9 +18,15 @@ public class PlayerTypeController {
     private PlayerTypeService playerTypeService;
 
     @PostMapping(value="/sendMoves", consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> determinePlayerType(@RequestBody List<String> chosenMoves) {
-        String playerType = playerTypeService.fireDroolsRules(chosenMoves);
+            produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<?> determinePlayerType(@RequestBody List<String> chosenMoveTypes) {
+        for (String cmt : chosenMoveTypes) {
+            if (! ( cmt.equals("AGGRESSIVE") || cmt.equals("TACTICAL")|| cmt.equals("POSITIONAL")
+                    || cmt.equals("DEFENSIVE") ) ) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+        String playerType = playerTypeService.fireDroolsRules(chosenMoveTypes);
 
         return ResponseEntity.ok(playerType);
     }

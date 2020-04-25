@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BaseService } from 'src/app/shared/services/base.service';
 import { Observable } from 'rxjs';
 
@@ -18,8 +18,8 @@ export class PlayerTestService extends BaseService {
     super();
    }
 
-  sendMoves(chosenMoves: string[]): Observable<any> {
-    console.log(`${this.baseUrl}${ENDPOINTS.SEND_MOVES}`);
-    return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_MOVES}`, chosenMoves);
+  sendMoves(chosenMoveTypes: string[]): Observable<any> {
+    console.log(chosenMoveTypes);
+    return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_MOVES}`, chosenMoveTypes, {responseType: 'text'});
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerTestService } from '../../services/player-test-service/player-test.service';
 import { Router } from '@angular/router';
+import { AGGRESSIVE_MOVES, DEFENSIVE_MOVES, TACTICAL_MOVES, POSITIONAL_MOVES } from '../../../shared/constants';
 
 @Component({
   selector: 'app-player-test',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class PlayerTestComponent implements OnInit {
   moves: string[][] =  [];
-  chosenMoves: string[] = [];
+  chosenMoveTypes: string[] = [];
   images: string[] = ['assets/positions/exf4$d5$Bc5.jpeg', 'assets/positions/Nf3$Qxd4$c3.jpeg',
                           'assets/positions/Ng5$d3$O-O.jpeg', 'assets/positions/Qa4$b4.jpeg'];
   currIdx = 0;
@@ -23,7 +24,7 @@ export class PlayerTestComponent implements OnInit {
     for (let img of this.images) {
       img = img.substr(0, img.indexOf('.jpeg'));
       const imgSrcArr = img.split('/');
-      this.moves.push(imgSrcArr[imgSrcArr.length - 1].split('$')) ;
+      this.moves.push(imgSrcArr[imgSrcArr.length - 1].split('$'));
     }
 
     this.currImageSrc = this.images[this.currIdx];
@@ -32,7 +33,16 @@ export class PlayerTestComponent implements OnInit {
   }
 
   goToNextStep() {
-    this.chosenMoves.push(this.moveSelect.textContent);
+    const move = this.moveSelect.textContent;
+    if (AGGRESSIVE_MOVES.includes(move)) {
+      this.chosenMoveTypes.push('AGGRESSIVE');
+    } else if (DEFENSIVE_MOVES.includes(move)) {
+      this.chosenMoveTypes.push('DEFENSIVE');
+    } else if (TACTICAL_MOVES.includes(move)) {
+      this.chosenMoveTypes.push('TACTICAL');
+    } else if (POSITIONAL_MOVES.includes(move)) {
+      this.chosenMoveTypes.push('POSITIONAL');
+    }
     if (document.getElementById('nextBtn').innerHTML !== 'Finish') {
       this.currIdx += 1;
       if (this.currIdx === this.images.length - 1) {
@@ -41,8 +51,8 @@ export class PlayerTestComponent implements OnInit {
       this.currImageSrc = this.images[this.currIdx];
       this.currMoves = this.moves[this.currIdx];
     } else {
-      this.playerTestService.sendMoves(this.chosenMoves).subscribe((chosenMoves: string[]) => {
-        localStorage.setItem('chosenMoves', chosenMoves.toString());
+      this.playerTestService.sendMoves(this.chosenMoveTypes).subscribe((chosenMoveTypes: string[]) => {
+        localStorage.setItem('chosenMoveTypes', chosenMoveTypes.toString());
         this.router.navigateByUrl('/');
       });
     }

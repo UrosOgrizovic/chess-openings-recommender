@@ -1,27 +1,40 @@
 package com.cor.backend.model;
 
 import com.cor.backend.model.enums.PlayerType;
+import org.apache.tools.ant.taskdefs.Move;
 
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+@Entity
+@Table(name = "Player")
 public class Player {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private List<String> chosenMoves;
+    @ElementCollection
+    private List<String> chosenMoveTypes;
+    @Column
     private PlayerType playerType;
+    @Column
     private int aggressiveCount;
+    @Column
     private int tacticalCount;
+    @Column
     private int defensiveCount;
+    @Column
     private int positionalCount;
 
 
     public Player() {
     }
 
-    public Player(List<String> chosenMoves, PlayerType playerType) {
-        this.chosenMoves = chosenMoves;
+    public Player(List<String> chosenMoveTypes, PlayerType playerType) {
+        this.chosenMoveTypes = chosenMoveTypes;
         this.playerType = playerType;
         this.aggressiveCount = 0;
         this.tacticalCount = 0;
@@ -29,16 +42,16 @@ public class Player {
         this.positionalCount = 0;
     }
 
-    public void setChosenMoves(List<String> chosenMoves) {
-        this.chosenMoves = chosenMoves;
+    public void setChosenMoveTypes(List<String> chosenMoveTypes) {
+        this.chosenMoveTypes = chosenMoveTypes;
     }
 
     public void setPlayerType(PlayerType playerType) {
         this.playerType = playerType;
     }
 
-    public List<String> getChosenMoves() {
-        return chosenMoves;
+    public List<String> getChosenMoveTypes() {
+        return chosenMoveTypes;
     }
 
     public PlayerType getPlayerType() {
