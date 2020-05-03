@@ -1,7 +1,30 @@
 <div class="ts-u-display--flex ts-u-justify--space-between ts-u-margin-top--md">
     <div class="landing-bio">
       <p>Chess Openings Recommender is your tool for finding out about the chess openings that match your playing style.</p>
-      <div id="board1" style="width: 480px;"></div>
+      <div class="row">
+        <div style="background-color: gainsboro; margin-right: 20px; text-align: center;" class="left-column">
+          <h2>Games recommended for you</h2>
+          <hr>
+          <div *ngFor="let rg of recommendedGamesDisplay">
+            <div *ngIf="selectedGameIdx === recommendedGamesDisplay.indexOf(rg) else elseBlock">
+              <a style="margin-bottom: 10px; background-color: white" (click)="displaySelectedGame(rg, $event)" id="recGame{{recommendedGamesDisplay.indexOf(rg)}}" href="#" onclick="return false;">{{rg}}</a>
+            </div>
+                        
+            <ng-template #elseBlock><a style="margin-bottom: 10px; background-color: gainsboro" (click)="displaySelectedGame(rg, $event)" id="recGame{{recommendedGamesDisplay.indexOf(rg)}}" href="#" onclick="return false;">{{rg}}</a></ng-template>
+            
+          </div>
+        </div>
+        <div class="right-column">
+          <div id="gameHeader" style="background-color: gainsboro; width:476px;">
+          <span id="white" style="font-weight: bold; font-size: 20px;">white</span><span style="font-size: 20px;">&emsp;vs.&emsp;</span> <span id="black" style="font-weight: bold; font-size: 20px;">black</span>
+          <br>
+          <span id="gameResult">result</span>&ensp;|&ensp;<span id="event">event</span>&ensp;|&ensp;<span id="site">site</span>&ensp;|&ensp;<span id="date">date</span>
+          </div>
+          <div id="board1" style="width: 480px;"></div>
+          <a href="#" class="move-btn previous round" (click)="previousMove()">&#8249;</a>
+          <a href="#" class="move-btn next round" (click)="nextMove()">&#8250;</a>
+        </div>
+      </div>
     </div>
 </div>
   

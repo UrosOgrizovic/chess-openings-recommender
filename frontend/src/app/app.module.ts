@@ -7,6 +7,7 @@ import { CoreModule } from './core/core.module';
 import { HomeModule } from './home/home.module';
 import { PlayerTestModule } from './playerTest/player-test.module';
 import { HttpClientModule } from '@angular/common/http';
+import { ChessGameModule } from './chess-game/chess-game.module';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { HttpClientModule } from '@angular/common/http';
     HomeModule,
     CoreModule,
     PlayerTestModule,
-    HttpClientModule
+    HttpClientModule,
+    ChessGameModule
   ],
   providers: [],
   bootstrap: [AppComponent]
