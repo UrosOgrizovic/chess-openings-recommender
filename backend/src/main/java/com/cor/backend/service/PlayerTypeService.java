@@ -23,6 +23,9 @@ public class PlayerTypeService {
         kieSession.insert(p);
 
         kieSession.fireAllRules();
+
+        kieSession.getAgenda().getAgendaGroup("data-for-player-type").setFocus();
+        kieSession.fireAllRules();
         kieSession.dispose();
         return p.getPlayerType().name();
 

@@ -1,0 +1,3 @@
+package drools.rules;
+
+agenda-group "data-for-player-type"
