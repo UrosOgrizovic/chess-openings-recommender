@@ -20,6 +20,7 @@ export class PlayerTestService extends BaseService {
 
   sendMoves(chosenMoveTypes: string[]): Observable<any> {
     console.log(chosenMoveTypes);
-    return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_MOVES}`, chosenMoveTypes, {responseType: 'text'});
+    // return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_MOVES}`, chosenMoveTypes, {responseType: 'text'});
+    return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_MOVES}`, chosenMoveTypes);
   }
 }

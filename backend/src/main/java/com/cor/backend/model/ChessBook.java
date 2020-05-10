@@ -18,12 +18,33 @@ public class ChessBook {
     private String goodreadsLink;
     @Column
     private PlayerType bookType;
+    @Column(name="goodreads_cover_photo_link")
+    private String goodreadsCoverPhotoLink;
 
-    public ChessBook(String title, String authorFullName, String goodreadsLink, PlayerType bookType) {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getGoodreadsCoverPhotoLink() {
+        return goodreadsCoverPhotoLink;
+    }
+
+    public void setGoodreadsCoverPhotoLink(String goodreadsCoverPhotoLink) {
+        this.goodreadsCoverPhotoLink = goodreadsCoverPhotoLink;
+    }
+
+
+    public ChessBook(String title, String authorFullName, String goodreadsLink, PlayerType bookType,
+                     String goodreadsCoverPhotoLink) {
         this.title = title;
         this.authorFullName = authorFullName;
         this.goodreadsLink = goodreadsLink;
         this.bookType = bookType;
+        this.goodreadsCoverPhotoLink = goodreadsCoverPhotoLink;
     }
 
     public PlayerType getBookType() {

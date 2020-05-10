@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ChessGameService } from '../../../chess-game/services/chess-game-service/chess-game.service';
-// import * as Chess from 'chess.js';
-// import { Chess } from 'chess.js';
 
 declare var ChessBoard: any;
 const Chess = require('chess.js');
@@ -13,7 +11,7 @@ const Chess = require('chess.js');
 })
 export class LandingComponent implements OnInit {
   game: any;
-  board: any;
+  gameBoard: any;
   boardConfig = {
     draggable: false,
     position: 'start'
@@ -22,26 +20,59 @@ export class LandingComponent implements OnInit {
   recommendedGamesDisplay = [];
   recommendedGames = [];
   selectedGameIdx: number;
+  recommended: any;
+  playerType = '';
+  selectedOpeningIdx: number;
+  selectedBookIdx: number;
+
 
   constructor(private chessGameService: ChessGameService) { }
 
   ngOnInit() {
-    this.game = new Chess();
-    this.board = ChessBoard('board1', this.boardConfig);
+    this.recommended = JSON.parse(localStorage.getItem('recommended'));
+    for (let i = 0; i < this.recommended.openings.length; i++) {
+      this.recommended.openings[i].openingName = this.escapeUnicodeChars(this.recommended.openings[i].openingName);
+      this.recommended.openings[i].description = this.escapeUnicodeChars(this.recommended.openings[i].description);
+    }
 
-    // only for demonstration, will be replaced by games of certain type
-    this.chessGameService.findAll().subscribe((res: any) => {
-      this.recommendedGames = res._embedded.chessGames;
-      for (const cg of this.recommendedGames) {
-        this.game.load_pgn(cg.pgn);
-        const header = this.game.header();
-        const whiteSurname = header.White.split(' ')[1];
-        const blackSurname = header.Black.split(' ')[1];
-        const toPush = whiteSurname + ' - ' + blackSurname + ' (' + header.Date.substring(0, 4) + ')';
-        this.recommendedGamesDisplay.push(toPush);
-      }
+    this.game = new Chess();
+    this.gameBoard = ChessBoard('gameBoard', this.boardConfig);
+
+    if (this.recommended) {
+      this.recommendedGames = this.recommended.chessGames;
+      this.fillGamesForDisplay();
       this.setGame(this.recommendedGames[0], 0);
-    });
+      this.playerType = this.recommended.chessGames[0].gameType;
+      this.selectedOpeningIdx = 0;
+      this.selectedBookIdx = 0;
+      console.log(this.recommended.books[0]);
+    } else {
+      // display all games if test not yet completed
+      this.chessGameService.findAll().subscribe((res: any) => {
+        this.recommendedGames = res._embedded.chessGames;
+        this.fillGamesForDisplay();
+        this.setGame(this.recommendedGames[0], 0);
+        this.selectedOpeningIdx = 0;
+        this.selectedBookIdx = 0;
+      });
+    }
+  }
+
+  escapeUnicodeChars(txt) {
+    return txt.replace(
+      /\\u([0-9a-f]{4})/g, (whole, group1) => String.fromCharCode(parseInt(group1, 16))
+    );
+  }
+
+  fillGamesForDisplay() {
+    for (const cg of this.recommendedGames) {
+      this.game.load_pgn(cg.pgn);
+      const header = this.game.header();
+      const whiteSurname = header.White.split(' ')[1];
+      const blackSurname = header.Black.split(' ')[1];
+      const toPush = whiteSurname + ' - ' + blackSurname + ' (' + header.Date.substring(0, 4) + ')';
+      this.recommendedGamesDisplay.push(toPush);
+    }
   }
 
   setGame(gameToSet: any, idx: number) {
@@ -67,19 +98,19 @@ export class LandingComponent implements OnInit {
       this.futureMoves.unshift(this.game.undo());
       i++;
     }
-    this.board.position(this.game.fen());
+    this.gameBoard.position(this.game.fen());
   }
 
   previousMove() {
     // adds item to beginning of array
     this.futureMoves.unshift(this.game.undo());
-    this.board.position(this.game.fen());
+    this.gameBoard.position(this.game.fen());
   }
 
   nextMove() {
     // removes first element of array
     this.game.move(this.futureMoves.shift());
-    this.board.position(this.game.fen());
+    this.gameBoard.position(this.game.fen());
   }
 
   displaySelectedGame(currRecGame: any, e: any) {

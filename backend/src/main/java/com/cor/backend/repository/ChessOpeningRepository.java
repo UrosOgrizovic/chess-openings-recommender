@@ -1,6 +1,6 @@
 package com.cor.backend.repository;
 
-import com.cor.backend.model.ChessGame;
+import com.cor.backend.model.ChessOpening;
 import com.cor.backend.model.enums.PlayerType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ChessGameRepository extends JpaRepository<ChessGame, Long> {
-    @Query("SELECT cg from ChessGame cg WHERE :gameType = cg.gameType")
-    List<ChessGame> findAllForPlayerType(@Param("gameType") PlayerType gameType);
+public interface ChessOpeningRepository extends JpaRepository<ChessOpening, Long> {
+    @Query("SELECT co from ChessOpening co WHERE :openingType = co.openingType")
+    List<ChessOpening> findAllForPlayerType(@Param("openingType") PlayerType openingType);
 }

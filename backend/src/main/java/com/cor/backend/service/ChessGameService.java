@@ -24,4 +24,9 @@ public class ChessGameService {
     public List<ChessGame> findAll() {
         return this.chessGameRepository.findAll();
     }
+
+    public List<ChessGame> findAllForPlayerType(PlayerType playerType) {
+        return this.chessGameRepository.findAllForPlayerType(playerType);
+    }
+
 }

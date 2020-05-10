@@ -1,0 +1,44 @@
+package drools.rules;
+
+import com.cor.backend.model.dto.PlayerDTO;
+import com.cor.backend.service.RecommendedService;
+import com.cor.backend.model.enums.PlayerType;
+
+
+agenda-group "recommended-for-player-type"
+
+rule "Set aggressive recommended"
+    when
+        $pdto: PlayerDTO(playerType == PlayerType.AGGRESSIVE);
+        $recommendedService: RecommendedService();
+    then
+        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.AGGRESSIVE));
+        update($pdto);
+end
+
+rule "Set tactical recommended"
+    when
+        $pdto: PlayerDTO(playerType == PlayerType.TACTICAL);
+        $recommendedService: RecommendedService();
+    then
+        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.TACTICAL));
+        update($pdto);
+end
+
+rule "Set defensive recommended"
+    when
+        $pdto: PlayerDTO(playerType == PlayerType.DEFENSIVE);
+        $recommendedService: RecommendedService();
+    then
+        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.DEFENSIVE));
+        update($pdto);
+end
+
+rule "Set positional recommended"
+    when
+        $pdto: PlayerDTO(playerType == PlayerType.POSITIONAL);
+        $recommendedService: RecommendedService();
+    then
+        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.POSITIONAL));
+        update($pdto);
+end

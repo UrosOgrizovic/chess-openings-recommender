@@ -1,5 +1,7 @@
 package com.cor.backend.model.dto;
 
+import com.cor.backend.model.ChessGame;
+
 public class ChessGameDTO {
     private String gameType;
     private String pgn;
@@ -10,6 +12,11 @@ public class ChessGameDTO {
     }
 
     public ChessGameDTO() {
+    }
+
+    public ChessGameDTO(ChessGame cg) {
+        this.gameType = cg.getGameType().toString();
+        this.pgn = cg.getPgn();
     }
 
     public String getGameType() {

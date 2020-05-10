@@ -1,5 +1,6 @@
 package com.cor.backend.controller;
 
+import com.cor.backend.model.Recommended;
 import com.cor.backend.service.PlayerTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class PlayerTypeController {
     private PlayerTypeService playerTypeService;
 
     @PostMapping(value="/sendMoves", consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.TEXT_PLAIN_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> determinePlayerType(@RequestBody List<String> chosenMoveTypes) {
         for (String cmt : chosenMoveTypes) {
             if (! ( cmt.equals("AGGRESSIVE") || cmt.equals("TACTICAL")|| cmt.equals("POSITIONAL")
@@ -26,8 +27,11 @@ public class PlayerTypeController {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
         }
-        String playerType = playerTypeService.fireDroolsRules(chosenMoveTypes);
 
-        return ResponseEntity.ok(playerType);
+        Recommended r = playerTypeService.fireDroolsRules(chosenMoveTypes);
+
+        return ResponseEntity.ok(r);
     }
+
+
 }

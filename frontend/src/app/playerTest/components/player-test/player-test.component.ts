@@ -51,8 +51,9 @@ export class PlayerTestComponent implements OnInit {
       this.currImageSrc = this.images[this.currIdx];
       this.currMoves = this.moves[this.currIdx];
     } else {
-      this.playerTestService.sendMoves(this.chosenMoveTypes).subscribe((chosenMoveTypes: string[]) => {
-        localStorage.setItem('chosenMoveTypes', chosenMoveTypes.toString());
+      this.playerTestService.sendMoves(this.chosenMoveTypes).subscribe((res: any) => {
+        // localStorage.setItem('chosenMoveTypes', chosenMoveTypes.toString());
+        localStorage.setItem('recommended', JSON.stringify(res));
         this.router.navigateByUrl('/');
       });
     }
