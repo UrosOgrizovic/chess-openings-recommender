@@ -1,48 +1,76 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { PlayerTestService } from '../../services/player-test-service/player-test.service';
 import { Router } from '@angular/router';
-import { AGGRESSIVE_MOVES, DEFENSIVE_MOVES, TACTICAL_MOVES, POSITIONAL_MOVES } from '../../../shared/constants';
+import { MOVE_TYPES_PER_IMAGE } from '../../../shared/constants';
+import { PlayerPreferences } from 'src/app/models/player-preferences.model';
 
 @Component({
   selector: 'app-player-test',
   templateUrl: './player-test.component.html',
   styleUrls: ['./player-test.component.css']
 })
-export class PlayerTestComponent implements OnInit {
+export class PlayerTestComponent implements OnInit, AfterViewInit {
   moves: string[][] =  [];
   chosenMoveTypes: string[] = [];
-  images: string[] = ['assets/positions/exf4$d5$Bc5.jpeg', 'assets/positions/Nf3$Qxd4$c3.jpeg',
-                          'assets/positions/Ng5$d3$O-O.jpeg', 'assets/positions/Qa4$b4.jpeg'];
+  images: string[] = ['', '', '', ''];
   currIdx = 0;
   currImageSrc = '';
   currMoves: string[] = [];
+  difficulties = ['beginner', 'intermediate', 'advanced'];
+  seriousness = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   moveSelect: HTMLSelectElement;
+  difficultySelect: HTMLSelectElement;
+  seriousnessSelect: HTMLSelectElement;
+  positionTime = false;
 
   constructor(private playerTestService: PlayerTestService, private router: Router) { }
 
   ngOnInit() {
-    for (let img of this.images) {
-      img = img.substr(0, img.indexOf('.jpeg'));
-      const imgSrcArr = img.split('/');
-      this.moves.push(imgSrcArr[imgSrcArr.length - 1].split('$'));
-    }
+    this.initializeMoves();
 
     this.currImageSrc = this.images[this.currIdx];
     this.currMoves = this.moves[this.currIdx];
-    this.moveSelect = (document.getElementById('moveSelect') as HTMLSelectElement);
+  }
+
+  initializeMoves() {
+    let i = 0;
+    for (let img of this.images) {
+      img = img.substr(0, img.indexOf('.jpeg'));
+      const imgSrcArr = img.split('/');
+      this.moves[i] = imgSrcArr[imgSrcArr.length - 1].split('$');
+      i++;
+    }
+  }
+
+  ngAfterViewInit() {
+    this.difficultySelect = (document.getElementById('difficultySelect') as HTMLSelectElement);
+    this.seriousnessSelect = (document.getElementById('seriousnessSelect') as HTMLSelectElement);
   }
 
   goToNextStep() {
-    const move = this.moveSelect.textContent;
-    if (AGGRESSIVE_MOVES.includes(move)) {
-      this.chosenMoveTypes.push('AGGRESSIVE');
-    } else if (DEFENSIVE_MOVES.includes(move)) {
-      this.chosenMoveTypes.push('DEFENSIVE');
-    } else if (TACTICAL_MOVES.includes(move)) {
-      this.chosenMoveTypes.push('TACTICAL');
-    } else if (POSITIONAL_MOVES.includes(move)) {
-      this.chosenMoveTypes.push('POSITIONAL');
+    if (!this.positionTime) {
+      this.positionTime = true;
+      const answers = [this.difficultySelect.textContent, this.seriousnessSelect.textContent];
+      const pp = new PlayerPreferences();
+      pp.playerDifficulty = this.difficultySelect.textContent.toUpperCase();
+      pp.playerSeriousness = parseInt(this.seriousnessSelect.textContent, 10);
+      pp.imgPaths = ['pos1', 'pos2', 'pos3', 'pos4'];
+      this.playerTestService.sendAnswers(pp).subscribe((res: PlayerPreferences) => {
+        this.images = res.imgPaths;
+        this.initializeMoves();
+        this.currImageSrc = this.images[0];
+        this.currMoves = this.moves[0];
+      });
+      this.positionTime = true;
+      setTimeout(() => {
+        this.moveSelect = (document.getElementById('moveSelect') as HTMLSelectElement);
+      }, 0);
+      return;
     }
+    const move = this.moveSelect.textContent;
+    const idx = this.currMoves.findIndex(mv => mv === move);
+    const imgSrcMoves = this.currImageSrc.split('/')[2].split('.')[0];
+    this.chosenMoveTypes.push(MOVE_TYPES_PER_IMAGE[imgSrcMoves][idx]);
     if (document.getElementById('nextBtn').innerHTML !== 'Finish') {
       this.currIdx += 1;
       if (this.currIdx === this.images.length - 1) {

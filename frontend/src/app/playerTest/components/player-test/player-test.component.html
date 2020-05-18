@@ -1,13 +1,39 @@
 
-<img src={{currImageSrc}} style="margin: 10px 10px 10px 0px; float: left; height: 50%; width:50%; max-height: 720px; max-width: 720px;" id="currPos">
+<div *ngIf="positionTime; else questionTime">
+    <img src={{currImageSrc}} style="margin: 10px 10px 10px 0px; float: left; height: 50%; width:50%; max-height: 720px; max-width: 720px;" id="currPos">
 
-<div style="margin-left: 10px; left: 50%; width: 50%; top: 42%; -ms-transform: translateY(-50%); position: absolute; transform: translateY(-50%);">
-    <h3>Which of the following moves would you play in this position?</h3>
-    <mat-form-field>
-        <mat-select [value]="currMoves[0]" id="moveSelect">
-            <mat-option *ngFor="let move of currMoves" [value]="move">{{move}}</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <br>
-    <button mat-raised-button color="primary" (click)="goToNextStep()" id="nextBtn">Next</button>
+
+    <div style="margin-left: 10px; left: 50%; width: 50%; top: 42%; -ms-transform: translateY(-50%); position: absolute; transform: translateY(-50%);">
+        <h3>Which of the following moves would you play in this position?</h3>
+        <mat-form-field>
+            <mat-select [value]="currMoves[0]" id="moveSelect">
+                <mat-option *ngFor="let move of currMoves" [value]="move">{{move}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" (click)="goToNextStep()" id="nextBtn">Next</button>
+    </div>
 </div>
+
+
+<div style="margin-top: 100px;">
+    <ng-template #questionTime>
+        <div style="width: 500px; margin: 0 auto; margin-top: 100px;">
+            <h3>How would you evaluate yourself as a chess player?</h3>
+            <mat-form-field>
+                <mat-select [value]="difficulties[0]" id="difficultySelect">
+                    <mat-option *ngFor="let diff of difficulties" [value]="diff">{{diff}}</mat-option>
+                </mat-select>
+            </mat-form-field><br>
+            <h3>How seriously do you take chess (1 - it's just a hobby, 10 - I want to become World Champion)?</h3>
+            <mat-form-field>
+                <mat-select [value]="seriousness[0]" id="seriousnessSelect">
+                    <mat-option *ngFor="let ser of seriousness" [value]="ser">{{ser}}</mat-option>
+                </mat-select>
+            </mat-form-field><br>
+            <button mat-raised-button color="primary" (click)="goToNextStep()">Next</button>
+        </div>
+    </ng-template>
+    
+</div>
+

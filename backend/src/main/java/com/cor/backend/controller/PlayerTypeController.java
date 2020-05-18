@@ -1,5 +1,6 @@
 package com.cor.backend.controller;
 
+import com.cor.backend.model.PlayerPreferences;
 import com.cor.backend.model.Recommended;
 import com.cor.backend.service.PlayerTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,23 @@ public class PlayerTypeController {
             }
         }
 
-        Recommended r = playerTypeService.fireDroolsRules(chosenMoveTypes);
+        Recommended r = this.playerTypeService.fireDroolsRulesMoves(chosenMoveTypes);
 
         return ResponseEntity.ok(r);
+    }
+
+
+
+    @PostMapping(value="/sendAnswers", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> determinePositionsToShow(@RequestBody PlayerPreferences pp) {
+        if (pp.getPlayerSeriousness() < 1 || pp.getPlayerSeriousness() > 10) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        if (pp.getImgPaths() != null && (pp.getImgPaths().length < 4 || pp.getImgPaths().length > 4)) {
+            pp.setImgPaths(new String[]{"pos1", "pos2", "pos3", "pos4"});
+        }
+        return ResponseEntity.ok(this.playerTypeService.fireDroolsRulesAnswers(pp));
     }
 
 

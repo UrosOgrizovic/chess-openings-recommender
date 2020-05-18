@@ -42,10 +42,9 @@ export class LandingComponent implements OnInit {
       this.recommendedGames = this.recommended.chessGames;
       this.fillGamesForDisplay();
       this.setGame(this.recommendedGames[0], 0);
-      this.playerType = this.recommended.chessGames[0].gameType;
+      this.playerType = this.recommended.chessGames[0].gameType[0] + this.recommended.chessGames[0].gameType.substring(1).toLowerCase();
       this.selectedOpeningIdx = 0;
       this.selectedBookIdx = 0;
-      console.log(this.recommended.books[0]);
     } else {
       // display all games if test not yet completed
       this.chessGameService.findAll().subscribe((res: any) => {

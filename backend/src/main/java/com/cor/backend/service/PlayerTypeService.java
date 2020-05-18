@@ -1,8 +1,10 @@
 package com.cor.backend.service;
 
 import com.cor.backend.model.Player;
+import com.cor.backend.model.PlayerPreferences;
 import com.cor.backend.model.Recommended;
 import com.cor.backend.model.dto.PlayerDTO;
+import com.cor.backend.model.enums.PlayerDifficulty;
 import com.cor.backend.model.enums.PlayerType;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -21,7 +23,7 @@ public class PlayerTypeService {
     @Autowired
     private RecommendedService recommendedService;
 
-    public Recommended fireDroolsRules(List<String> chosenMoveTypes) {
+    public Recommended fireDroolsRulesMoves(List<String> chosenMoveTypes) {
 
         Player p = new Player();
         PlayerDTO pdto = new PlayerDTO();
@@ -39,7 +41,15 @@ public class PlayerTypeService {
         kieSession.fireAllRules();
         kieSession.dispose();
 
-//        return p.getPlayerType().name();
         return pdto.getRecommended();
+    }
+
+    public PlayerPreferences fireDroolsRulesAnswers(PlayerPreferences pp) {
+        KieSession kieSession = kieContainer.newKieSession();
+        kieSession.getAgenda().getAgendaGroup("player-preferences").setFocus();
+        kieSession.insert(pp);
+        kieSession.fireAllRules();
+        kieSession.dispose();
+        return pp;
     }
 }

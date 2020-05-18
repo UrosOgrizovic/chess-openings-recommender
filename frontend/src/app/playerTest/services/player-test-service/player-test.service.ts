@@ -3,9 +3,11 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BaseService } from 'src/app/shared/services/base.service';
 import { Observable } from 'rxjs';
+import { PlayerPreferences } from 'src/app/models/player-preferences.model';
 
 const ENDPOINTS = {
   SEND_MOVES: '/playerType/sendMoves',
+  SEND_ANSWERS: '/playerType/sendAnswers'
 };
 
 
@@ -18,9 +20,11 @@ export class PlayerTestService extends BaseService {
     super();
    }
 
+  sendAnswers(playerPreferences: PlayerPreferences): Observable<any> {
+    return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_ANSWERS}`, playerPreferences);
+  }
+
   sendMoves(chosenMoveTypes: string[]): Observable<any> {
-    console.log(chosenMoveTypes);
-    // return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_MOVES}`, chosenMoveTypes, {responseType: 'text'});
     return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_MOVES}`, chosenMoveTypes);
   }
 }

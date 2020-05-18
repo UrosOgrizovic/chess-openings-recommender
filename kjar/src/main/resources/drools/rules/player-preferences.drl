@@ -1,0 +1,119 @@
+package drools.rules;
+
+import com.cor.backend.model.PlayerPreferences;
+import com.cor.backend.model.enums.PlayerDifficulty;
+
+
+
+agenda-group "player-preferences"
+
+rule "Beginner and not serious at all"
+    no-loop
+    when
+        $pp: PlayerPreferences(playerDifficulty == PlayerDifficulty.BEGINNER && playerSeriousness < 4);
+    then
+        $pp.getImgPaths()[0] = 'assets/positions/exf4$d5$Bc5.jpeg';
+        $pp.getImgPaths()[1] = 'assets/positions/Nf3$Qxd4$c3.jpeg';
+        $pp.getImgPaths()[2] = 'assets/positions/Ng5$d3$O-O.jpeg';
+        $pp.getImgPaths()[3] = 'assets/positions/Qa4$b4.jpeg';
+        update($pp);
+end
+
+rule "Intermediate and not serious at all"
+    no-loop
+    when
+        $pp: PlayerPreferences(playerDifficulty == PlayerDifficulty.INTERMEDIATE && playerSeriousness < 4);
+    then
+        $pp.getImgPaths()[0] = 'assets/positions/e5$Bxf6$Bb5.jpeg';
+        $pp.getImgPaths()[1] = 'assets/positions/Qd2$Qe5$Qxc5.jpeg';
+        $pp.getImgPaths()[2] = 'assets/positions/Rxa7$Kd2$d4.jpeg';
+        $pp.getImgPaths()[3] = 'assets/positions/Qxc5$Ne4$Nh5.jpeg';
+        update($pp);
+end
+
+rule "Advanced and not serious at all"
+    no-loop
+    when
+        $pp: PlayerPreferences(playerDifficulty == PlayerDifficulty.ADVANCED && playerSeriousness < 4);
+    then
+        $pp.getImgPaths()[0] = 'assets/positions/Nxe4$Nxd5$Bxf2.jpeg';
+        $pp.getImgPaths()[1] = 'assets/positions/g5$Bxf6$Rxd5.jpeg';
+        $pp.getImgPaths()[2] = 'assets/positions/Qxc5$Ne4$Nh5.jpeg';
+        $pp.getImgPaths()[3] = 'assets/positions/Bxh7$Qf5$Ng5.jpeg';
+        update($pp);
+end
+
+rule "Beginner and moderately serious"
+    no-loop
+    when
+        $pp: PlayerPreferences(playerDifficulty == PlayerDifficulty.BEGINNER && playerSeriousness > 3 &&
+        playerSeriousness < 8);
+    then
+        $pp.getImgPaths()[0] = 'assets/positions/e5$Bxf6$Bb5.jpeg';
+        $pp.getImgPaths()[1] = 'assets/positions/Qxc5$Ne4$Nh5.jpeg';
+        $pp.getImgPaths()[2] = 'assets/positions/Qa4$b4.jpeg';
+        $pp.getImgPaths()[3] = 'assets/positions/Nf3$Qxd4$c3.jpeg';
+        update($pp);
+end
+
+rule "Intermediate and moderately serious"
+    no-loop
+    when
+        $pp: PlayerPreferences(playerDifficulty == PlayerDifficulty.INTERMEDIATE && playerSeriousness > 3 &&
+        playerSeriousness < 8);
+    then
+        $pp.getImgPaths()[0] = 'assets/positions/Qd2$Qe5$Qxc5.jpeg';
+        $pp.getImgPaths()[1] = 'assets/positions/Nxe4$Nxd5$Bxf2.jpeg';
+        $pp.getImgPaths()[2] = 'assets/positions/Rxa7$Kd2$d4.jpeg';
+        $pp.getImgPaths()[3] = 'assets/positions/g5$Bxf6$Rxd5.jpeg';
+        update($pp);
+end
+
+rule "Advanced and moderately serious"
+    no-loop
+    when
+        $pp: PlayerPreferences(playerDifficulty == PlayerDifficulty.ADVANCED && playerSeriousness > 3 &&
+            playerSeriousness < 8);
+    then
+        $pp.getImgPaths()[0] = 'assets/positions/Ra4$Rxa5$Nd2.jpeg';
+        $pp.getImgPaths()[1] = 'assets/positions/Bxh7$Qf5$Ng5.jpeg';
+        $pp.getImgPaths()[2] = 'assets/positions/g5$Bxf6$Rxd5.jpeg';
+        $pp.getImgPaths()[3] = 'assets/positions/Qd2$Qe5$Qxc5.jpeg';
+        update($pp);
+end
+
+rule "Beginner and very serious"
+    no-loop
+    when
+        $pp: PlayerPreferences(playerDifficulty == PlayerDifficulty.BEGINNER && playerSeriousness > 7);
+    then
+        $pp.getImgPaths()[0] = 'assets/positions/Qd2$Qe5$Qxc5.jpeg';
+        $pp.getImgPaths()[1] = 'assets/positions/Nxe4$Nxd5$Bxf2.jpeg';
+        $pp.getImgPaths()[2] = 'assets/positions/Bxh7$Qf5$Ng5.jpeg';
+        $pp.getImgPaths()[3] = 'assets/positions/Qxc5$Ne4$Nh5.jpeg';
+        update($pp);
+end
+
+rule "Intermediate and very serious"
+    no-loop
+    when
+        $pp: PlayerPreferences(playerDifficulty == PlayerDifficulty.INTERMEDIATE && playerSeriousness > 7);
+    then
+        $pp.getImgPaths()[0] = 'assets/positions/Ra4$Rxa5$Nd2.jpeg';
+        $pp.getImgPaths()[1] = 'assets/positions/Qd2$Qe5$Qxc5.jpeg';
+        $pp.getImgPaths()[2] = 'assets/positions/Qf3$Qh5$Bxf7.jpeg';
+        $pp.getImgPaths()[3] = 'assets/positions/Bxh7$Qf5$Ng5.jpeg';
+        update($pp);
+end
+
+rule "Advanced and very serious"
+    no-loop
+    when
+        $pp: PlayerPreferences(playerDifficulty == PlayerDifficulty.ADVANCED && playerSeriousness > 7);
+    then
+        $pp.getImgPaths()[0] = 'assets/positions/Bxh7$Qf5$Ng5.jpeg';
+        $pp.getImgPaths()[1] = 'assets/positions/Ra4$Rxa5$Nd2.jpeg';
+        $pp.getImgPaths()[2] = 'assets/positions/Qxg3$Qf7$Qd2.jpeg';
+        $pp.getImgPaths()[3] = 'assets/positions/Qf3$Qh5$Bxf7.jpeg';
+        update($pp);
+end
