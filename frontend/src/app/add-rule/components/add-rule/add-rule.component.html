@@ -1,0 +1,7 @@
+<div style="text-align: center;">
+<h1>Add DRL File</h1>
+<label>DRL file title: </label><input type="text" style="margin-top: 20px" [(ngModel)]='drlFileTitle'/><br>
+<textarea type="text" id="addRuleInput" [(ngModel)]='rule' style="width: 600px; height: 400px; white-space: pre-line; margin-top: 20px; margin-left: 130px;">
+</textarea>
+<button mat-raised-button color="primary" (click)="saveDRLFile()" style="margin-left: 20px;">Add .drl file</button>
+</div>

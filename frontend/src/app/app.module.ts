@@ -8,10 +8,11 @@ import { HomeModule } from './home/home.module';
 import { PlayerTestModule } from './playerTest/player-test.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ChessGameModule } from './chess-game/chess-game.module';
+import { AddRuleModule } from './add-rule/add-rule.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +21,8 @@ import { ChessGameModule } from './chess-game/chess-game.module';
     CoreModule,
     PlayerTestModule,
     HttpClientModule,
-    ChessGameModule
+    ChessGameModule,
+    AddRuleModule
   ],
   providers: [],
   bootstrap: [AppComponent]
