@@ -3,6 +3,7 @@ import { PlayerTestService } from '../../services/player-test-service/player-tes
 import { Router } from '@angular/router';
 import { MOVE_TYPES_PER_IMAGE } from '../../../shared/constants';
 import { PlayerPreferences } from 'src/app/models/player-preferences.model';
+import { DeterminePlayerType } from 'src/app/models/determine-player-type.model';
 
 @Component({
   selector: 'app-player-test',
@@ -22,6 +23,7 @@ export class PlayerTestComponent implements OnInit, AfterViewInit {
   difficultySelect: HTMLSelectElement;
   seriousnessSelect: HTMLSelectElement;
   positionTime = false;
+  playerPreferences: PlayerPreferences;
 
   constructor(private playerTestService: PlayerTestService, private router: Router) { }
 
@@ -50,16 +52,16 @@ export class PlayerTestComponent implements OnInit, AfterViewInit {
   goToNextStep() {
     if (!this.positionTime) {
       this.positionTime = true;
-      const answers = [this.difficultySelect.textContent, this.seriousnessSelect.textContent];
-      const pp = new PlayerPreferences();
-      pp.playerDifficulty = this.difficultySelect.textContent.toUpperCase();
-      pp.playerSeriousness = parseInt(this.seriousnessSelect.textContent, 10);
-      pp.imgPaths = ['pos1', 'pos2', 'pos3', 'pos4'];
-      this.playerTestService.sendAnswers(pp).subscribe((res: PlayerPreferences) => {
+      this.playerPreferences = new PlayerPreferences();
+      this.playerPreferences.playerDifficulty = this.difficultySelect.textContent.toUpperCase();
+      this.playerPreferences.playerSeriousness = parseInt(this.seriousnessSelect.textContent, 10);
+      this.playerPreferences.imgPaths = ['pos1', 'pos2', 'pos3', 'pos4'];
+      this.playerTestService.sendAnswers(this.playerPreferences).subscribe((res: PlayerPreferences) => {
         this.images = res.imgPaths;
         this.initializeMoves();
         this.currImageSrc = this.images[0];
         this.currMoves = this.moves[0];
+        this.playerPreferences = res;
       });
       this.positionTime = true;
       setTimeout(() => {
@@ -79,7 +81,10 @@ export class PlayerTestComponent implements OnInit, AfterViewInit {
       this.currImageSrc = this.images[this.currIdx];
       this.currMoves = this.moves[this.currIdx];
     } else {
-      this.playerTestService.sendMoves(this.chosenMoveTypes).subscribe((res: any) => {
+      const determinePlayerType = new DeterminePlayerType();
+      determinePlayerType.chosenMoveTypes = this.chosenMoveTypes;
+      determinePlayerType.playerDifficulty = this.playerPreferences.playerDifficulty;
+      this.playerTestService.sendMoves(determinePlayerType).subscribe((res: any) => {
         // localStorage.setItem('chosenMoveTypes', chosenMoveTypes.toString());
         localStorage.setItem('recommended', JSON.stringify(res));
         this.router.navigateByUrl('/');

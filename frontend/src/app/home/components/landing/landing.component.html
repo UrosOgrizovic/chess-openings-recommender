@@ -59,8 +59,8 @@
         <div style="background-color: gainsboro; margin-right: 10px; text-align: center; height: 220px;" class="games-left-column">
           <h2 style="width: 200px;">Books recommended for you ({{playerType}})</h2>
         </div>
-        <div *ngFor="let rb of recommended.books" style="margin-left: 150px;">  
-          <div class="games-right-column" style="width: 40%;">
+        <div *ngFor="let rb of recommended.books" style="margin-left: 200px;">  
+          <div class="games-right-column" style="width: 25%;">
             <a href={{recommended.books[recommended.books.indexOf(rb)].goodreadsLink}} target="_blank"><img width="50%" height="50%" src={{recommended.books[recommended.books.indexOf(rb)].goodreadsCoverPhotoLink}}>
             </a>
             {{recommended.books[recommended.books.indexOf(rb)].authorFullName}}<br>

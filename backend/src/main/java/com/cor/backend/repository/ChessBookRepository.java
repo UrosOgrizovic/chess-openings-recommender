@@ -13,4 +13,7 @@ import java.util.List;
 public interface ChessBookRepository extends JpaRepository<ChessBook, Long> {
     @Query("SELECT cb from ChessBook cb WHERE :bookType = cb.bookType")
     List<ChessBook> findAllForPlayerType(@Param("bookType") PlayerType bookType);
+
+    @Query(value = "SELECT cb from ChessBook cb WHERE :title = cb.title")
+    ChessBook findForTitle(@Param("title") String title);
 }

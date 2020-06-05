@@ -1,6 +1,7 @@
 package com.cor.backend.model.dto;
 
 import com.cor.backend.model.ChessBook;
+import com.cor.backend.model.enums.PlayerDifficulty;
 
 public class ChessBookDTO {
     private String title;
@@ -8,6 +9,15 @@ public class ChessBookDTO {
     private String goodreadsLink;
     private String bookType;
     private String goodreadsCoverPhotoLink;
+    private PlayerDifficulty bookDifficulty;
+
+    public PlayerDifficulty getBookDifficulty() {
+        return bookDifficulty;
+    }
+
+    public void setBookDifficulty(PlayerDifficulty bookDifficulty) {
+        this.bookDifficulty = bookDifficulty;
+    }
 
     public String getGoodreadsCoverPhotoLink() {
         return goodreadsCoverPhotoLink;
@@ -58,5 +68,6 @@ public class ChessBookDTO {
         this.goodreadsLink = cb.getGoodreadsLink();
         this.title = cb.getTitle();
         this.goodreadsCoverPhotoLink = cb.getGoodreadsCoverPhotoLink();
+        this.bookDifficulty = cb.getBookDifficulty();
     }
 }

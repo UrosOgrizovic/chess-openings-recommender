@@ -17,4 +17,8 @@ public class ChessBookService {
     public List<ChessBook> findAllForPlayerType(PlayerType playerType) {
         return this.chessBookRepository.findAllForPlayerType(playerType);
     }
+
+    public ChessBook findByTitle(String title) {
+        return this.chessBookRepository.findForTitle(title);
+    }
 }

@@ -1,5 +1,6 @@
 package com.cor.backend.model;
 
+import com.cor.backend.model.enums.PlayerDifficulty;
 import com.cor.backend.model.enums.PlayerType;
 
 import javax.persistence.*;
@@ -21,6 +22,17 @@ public class ChessBook {
     @Column(name="goodreads_cover_photo_link")
     private String goodreadsCoverPhotoLink;
 
+    @Column
+    private PlayerDifficulty bookDifficulty;
+
+    public PlayerDifficulty getBookDifficulty() {
+        return bookDifficulty;
+    }
+
+    public void setBookDifficulty(PlayerDifficulty bookDifficulty) {
+        this.bookDifficulty = bookDifficulty;
+    }
+
     public Long getId() {
         return id;
     }
@@ -39,12 +51,13 @@ public class ChessBook {
 
 
     public ChessBook(String title, String authorFullName, String goodreadsLink, PlayerType bookType,
-                     String goodreadsCoverPhotoLink) {
+                     String goodreadsCoverPhotoLink, PlayerDifficulty bookDifficulty) {
         this.title = title;
         this.authorFullName = authorFullName;
         this.goodreadsLink = goodreadsLink;
         this.bookType = bookType;
         this.goodreadsCoverPhotoLink = goodreadsCoverPhotoLink;
+        this.bookDifficulty = bookDifficulty;
     }
 
     public PlayerType getBookType() {

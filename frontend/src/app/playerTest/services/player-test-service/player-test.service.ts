@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BaseService } from 'src/app/shared/services/base.service';
 import { Observable } from 'rxjs';
 import { PlayerPreferences } from 'src/app/models/player-preferences.model';
+import { DeterminePlayerType } from 'src/app/models/determine-player-type.model';
 
 const ENDPOINTS = {
   SEND_MOVES: '/playerType/sendMoves',
@@ -24,7 +25,7 @@ export class PlayerTestService extends BaseService {
     return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_ANSWERS}`, playerPreferences);
   }
 
-  sendMoves(chosenMoveTypes: string[]): Observable<any> {
-    return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_MOVES}`, chosenMoveTypes);
+  sendMoves(determinePlayerType: DeterminePlayerType): Observable<any> {
+    return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_MOVES}`, determinePlayerType);
   }
 }

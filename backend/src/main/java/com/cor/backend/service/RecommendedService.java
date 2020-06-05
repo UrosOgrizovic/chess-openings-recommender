@@ -25,10 +25,14 @@ public class RecommendedService {
     @Autowired
     private ChessGameService chessGameService;
 
-    public Recommended getRecommendedForPlayerType(PlayerType playerType) {
+    public Recommended getRecommendedForPlayerType(PlayerType playerType, ArrayList<String> chessBookTitles) {
         Recommended r = new Recommended();
 
-        List<ChessBook> books = this.chessBookService.findAllForPlayerType(playerType);
+        List<ChessBook> books = new ArrayList<>();
+        for (String title : chessBookTitles) {
+            ChessBook cb = this.chessBookService.findByTitle(title);
+            books.add(cb);
+        }
         List<ChessGame> games = this.chessGameService.findAllForPlayerType(playerType);
         List<ChessOpening> openings = this.chessOpeningService.findAllForPlayerType(playerType);
 
@@ -42,12 +46,10 @@ public class RecommendedService {
 
         for (ChessGame cg : games) {
             gameDTOS.add(new ChessGameDTO(cg));
-
         }
 
         for (ChessOpening co : openings) {
             openingDTOS.add(new ChessOpeningDTO(co));
-
         }
 
         r.setBooks(bookDTOS);

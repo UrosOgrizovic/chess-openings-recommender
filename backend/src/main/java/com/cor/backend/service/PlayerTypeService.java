@@ -3,6 +3,7 @@ package com.cor.backend.service;
 import com.cor.backend.model.Player;
 import com.cor.backend.model.PlayerPreferences;
 import com.cor.backend.model.Recommended;
+import com.cor.backend.model.dto.DeterminePlayerTypeDTO;
 import com.cor.backend.model.dto.PlayerDTO;
 import com.cor.backend.model.enums.PlayerDifficulty;
 import com.cor.backend.model.enums.PlayerType;
@@ -23,20 +24,22 @@ public class PlayerTypeService {
     @Autowired
     private RecommendedService recommendedService;
 
-    public Recommended fireDroolsRulesMoves(List<String> chosenMoveTypes) {
+    public Recommended fireDroolsRulesMoves(DeterminePlayerTypeDTO determinePlayerTypeDTO) {
 
         Player p = new Player();
         PlayerDTO pdto = new PlayerDTO();
-        p.setChosenMoveTypes(chosenMoveTypes);
+        p.setChosenMoveTypes(determinePlayerTypeDTO.getChosenMoveTypes());
         KieSession kieSession = kieContainer.newKieSession();
         kieSession.getAgenda().getAgendaGroup("player-type").setFocus();
         kieSession.insert(p);
         kieSession.fireAllRules();
 
+        pdto.setPlayerDifficulty(determinePlayerTypeDTO.getPlayerDifficulty());
         pdto.setPlayerType(p.getPlayerType());
         kieSession.getAgenda().getAgendaGroup("recommended-for-player-type").setFocus();
         kieSession.insert(pdto);
-        kieSession.insert(recommendedService);
+        
+        kieSession.insert(this.recommendedService);
 
         kieSession.fireAllRules();
         kieSession.dispose();
