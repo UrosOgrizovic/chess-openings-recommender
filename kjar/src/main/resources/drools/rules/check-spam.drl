@@ -1,0 +1,23 @@
+package drools.rules;
+
+import com.cor.backend.model.UserEvent;
+
+
+agenda-group "check-spam"
+
+rule "More than 5 tests requested in less than 1 hour"
+    no-loop
+    lock-on-active true
+    when
+        $ue1: UserEvent();
+        Number(intValue >= 5) from accumulate(
+            $ue2: UserEvent(
+                this != $ue1,
+                this meets[1h] $ue1
+            ),
+            count($ue2)
+        );
+    then
+        $ue1.setSpam(true);
+        update($ue1);
+end

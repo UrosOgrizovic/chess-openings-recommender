@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChessGameService } from '../../../chess-game/services/chess-game-service/chess-game.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 declare var ChessBoard: any;
 const Chess = require('chess.js');
@@ -26,9 +28,13 @@ export class LandingComponent implements OnInit {
   selectedBookIdx: number;
 
 
-  constructor(private chessGameService: ChessGameService) { }
+  constructor(private chessGameService: ChessGameService,
+              private toastr: ToastrService) { }
 
   ngOnInit() {
+    if (localStorage.getItem('spamDetected') === 'true') {
+      this.toastr.error('More than 5 tests requested in one hour', 'Spam detected');
+    }
     this.recommended = JSON.parse(localStorage.getItem('recommended'));
 
     if (this.recommended) {

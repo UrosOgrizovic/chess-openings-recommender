@@ -30,7 +30,8 @@
             ],
             "styles": [
               "src/styles.css",
-              "./node_modules/chessboardjs/www/releases/0.3.0/css/chessboard-0.3.0.min.css"
+              "./node_modules/chessboardjs/www/releases/0.3.0/css/chessboard-0.3.0.min.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",

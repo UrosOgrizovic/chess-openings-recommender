@@ -9,6 +9,9 @@ import { PlayerTestModule } from './playerTest/player-test.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ChessGameModule } from './chess-game/chess-game.module';
 import { AddRuleModule } from './add-rule/add-rule.module';
+import { ToastrModule } from 'ngx-toastr';
+import { SharedModule } from './shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { AddRuleModule } from './add-rule/add-rule.module';
     PlayerTestModule,
     HttpClientModule,
     ChessGameModule,
-    AddRuleModule
+    AddRuleModule,
+    SharedModule,
+    BrowserAnimationsModule, // required animations module for toastr
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

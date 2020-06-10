@@ -8,7 +8,8 @@ import { DeterminePlayerType } from 'src/app/models/determine-player-type.model'
 
 const ENDPOINTS = {
   SEND_MOVES: '/playerType/sendMoves',
-  SEND_ANSWERS: '/playerType/sendAnswers'
+  SEND_ANSWERS: '/playerType/sendAnswers',
+  CHECK_SPAM: '/playerType/checkSpam'
 };
 
 
@@ -27,5 +28,9 @@ export class PlayerTestService extends BaseService {
 
   sendMoves(determinePlayerType: DeterminePlayerType): Observable<any> {
     return this.http.post(`${this.baseUrl}${ENDPOINTS.SEND_MOVES}`, determinePlayerType);
+  }
+
+  checkSpam(): Observable<any> {
+    return this.http.post(`${this.baseUrl}${ENDPOINTS.CHECK_SPAM}`, {});
   }
 }
