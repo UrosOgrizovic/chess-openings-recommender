@@ -1,0 +1,27 @@
+template header
+ruleTitle
+playerDifficulty
+playerSeriousness
+position1
+position2
+position3
+position4
+
+package templateRules;
+import com.cor.backend.model.PlayerPreferences;
+import com.cor.backend.model.enums.PlayerDifficulty;
+
+template "custom-rule"
+rule "@{ruleTitle}"
+    no-loop
+    when
+        $pp: PlayerPreferences(playerDifficulty == PlayerDifficulty.@{playerDifficulty} && playerSeriousness < @{playerSeriousness});
+    then
+        $pp.getImgPaths()[0] = 'assets/positions/@{position1}.jpeg';
+        $pp.getImgPaths()[1] = 'assets/positions/@{position2}.jpeg';
+        $pp.getImgPaths()[2] = 'assets/positions/@{position3}.jpeg';
+        $pp.getImgPaths()[3] = 'assets/positions/@{position4}.jpeg';
+        update($pp);
+end
+
+end template

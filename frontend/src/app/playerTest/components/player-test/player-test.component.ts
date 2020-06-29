@@ -28,12 +28,6 @@ export class PlayerTestComponent implements OnInit, AfterViewInit {
   constructor(private playerTestService: PlayerTestService, private router: Router) { }
 
   ngOnInit() {
-    this.playerTestService.checkSpam().subscribe((res: boolean) => {
-      if (res) {
-        localStorage.setItem('spamDetected', 'true');
-        this.router.navigate(['']);
-      }
-    });
     this.initializeMoves();
 
     this.currImageSrc = this.images[this.currIdx];
@@ -70,6 +64,12 @@ export class PlayerTestComponent implements OnInit, AfterViewInit {
         this.playerPreferences = res;
       });
       this.positionTime = true;
+      this.playerTestService.checkSpam().subscribe((res: boolean) => {
+        if (res) {
+          localStorage.setItem('spamDetected', 'true');
+          this.router.navigate(['']);
+        }
+      });
       setTimeout(() => {
         this.moveSelect = (document.getElementById('moveSelect') as HTMLSelectElement);
       }, 0);

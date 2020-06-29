@@ -1,0 +1,17 @@
+package templateRules;
+import com.cor.backend.model.PlayerPreferences;
+import com.cor.backend.model.enums.PlayerDifficulty;
+
+rule "naziv pravila"
+    no-loop
+    when
+        $pp: PlayerPreferences(playerDifficulty == PlayerDifficulty.BEGINNER && playerSeriousness < 3);
+    then
+        $pp.getImgPaths()[0] = 'assets/positions/Rxa7$Kd2$d4.jpeg';
+        $pp.getImgPaths()[1] = 'assets/positions/Ra4$Rxa5$Nd2.jpeg';
+        $pp.getImgPaths()[2] = 'assets/positions/Qf3$Qh5$Bxf7.jpeg';
+        $pp.getImgPaths()[3] = 'assets/positions/Qa4$b4.jpeg';
+        update($pp);
+end
+
+

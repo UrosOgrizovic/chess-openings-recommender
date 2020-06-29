@@ -1,7 +1,44 @@
 <div style="text-align: center;">
 <h1>Add DRL File</h1>
-<label>DRL file title: </label><input type="text" style="margin-top: 20px" [(ngModel)]='drlFileTitle'/><br>
-<textarea type="text" id="addRuleInput" [(ngModel)]='rule' style="width: 600px; height: 400px; white-space: pre-line; margin-top: 20px; margin-left: 130px;">
-</textarea>
+<label>DRL file name: </label><input type="text" style="margin-top: 20px" [(ngModel)]='drlFileName'/><br>
+<label>Rule title: </label><input type="text" style="margin-top: 20px" [(ngModel)]='ruleTitle'/><br>
+<label>Player difficulty: </label>
+<mat-form-field>
+    <mat-select [value]="difficulties[0]" id="difficultySelect" [(value)]="playerDifficulty">
+        <mat-option *ngFor="let diff of difficulties" [value]="diff">{{diff}}</mat-option>
+    </mat-select>
+</mat-form-field><br>
+
+<label>Player seriousness: </label>
+<mat-form-field>
+    <mat-select [value]="seriousness[0]" id="seriousnessSelect" [(value)]="playerSeriousness">
+        <mat-option *ngFor="let ser of seriousness" [value]="ser">{{ser}}</mat-option>
+    </mat-select>
+</mat-form-field><br>
+<label>Position #1: </label>
+<mat-form-field>
+    <mat-select [value]="positions[0]" id="position1Select" [(value)]="position1">
+        <mat-option *ngFor="let pos of positions" [value]="pos">{{pos}}</mat-option>
+    </mat-select>
+</mat-form-field><br>
+<label>Position #2: </label>
+<mat-form-field>
+    <mat-select [value]="positions[0]" id="position2Select" [(value)]="position2">
+        <mat-option *ngFor="let pos of positions" [value]="pos">{{pos}}</mat-option>
+    </mat-select>
+</mat-form-field><br>
+<label>Position #3: </label>
+<mat-form-field>
+    <mat-select [value]="positions[0]" id="position3Select" [(value)]="position3">
+        <mat-option *ngFor="let pos of positions" [value]="pos">{{pos}}</mat-option>
+    </mat-select>
+</mat-form-field><br>
+<label>Position #4: </label>
+<mat-form-field>
+    <mat-select [value]="positions[0]" id="position4Select" [(value)]="position4">
+        <mat-option *ngFor="let pos of positions" [value]="pos">{{pos}}</mat-option>
+    </mat-select>
+</mat-form-field><br>
+
 <button mat-raised-button color="primary" (click)="saveDRLFile()" style="margin-left: 20px;">Add .drl file</button>
 </div>

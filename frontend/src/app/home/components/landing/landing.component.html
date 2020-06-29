@@ -4,12 +4,11 @@
   <div class="row">
 
     <!-- Games -->
-    <div class="left-column">
-      <!-- <p>Chess Openings Recommender is your tool for finding out about the chess openings that match your playing style.</p> -->
+    <div class="left-column" id="leftColumnDiv">
 
       <div class="row" style="background-color: gainsboro;">
         <div style="background-color: gainsboro; margin-right: 20px; text-align: center;" class="games-left-column">
-          <h2>Games recommended for you ({{playerType}})</h2>
+          <h2>Games recommended for you {{'(' + playerType + ')' ? playerType : ''}}</h2>
           <hr>
           <div *ngFor="let rg of recommendedGamesDisplay">
             <div *ngIf="selectedGameIdx === recommendedGamesDisplay.indexOf(rg) else elseBlock">
@@ -33,45 +32,47 @@
       </div>
     </div>
 
-    <!-- Openings -->
-    <div class="right-column">
-      <div class="row" style="height:100%;">
-        <div class="games-left-column" style="width: 30%; ">
-          <div style="background-color: gainsboro; margin-right: 10px; text-align: center;" class="games-left-column">
-            <h2 style="width: 200px;">Openings recommended for you ({{playerType}})</h2>
-            <hr style="width: 200px;">
-            <div *ngFor="let ro of recommended.openings">
-              <div *ngIf="selectedOpeningIdx === recommended.openings.indexOf(ro) else elseBlock">
-                <a style="margin-bottom: 10px; background-color: white; width: 170px; text-align: center;" (click)="selectedOpeningIdx = recommended.openings.indexOf(ro)" href="#" onclick="return false;">{{ro.openingName}}</a>
+    <div *ngIf="recommended">
+      <!-- Openings -->
+      <div class="right-column">
+        <div class="row" style="height:100%;">
+          <div class="games-left-column" style="width: 30%; ">
+            <div style="background-color: gainsboro; margin-right: 10px; text-align: center;" class="games-left-column">
+              <h2 style="width: 200px;">Openings recommended for you ({{playerType}})</h2>
+              <hr style="width: 200px;">
+
+                <div  *ngFor="let ro of recommended.openings">
+                  <div *ngIf="selectedOpeningIdx === recommended.openings.indexOf(ro) else elseBlock">
+                    <a style="margin-bottom: 10px; background-color: white; width: 170px; text-align: center;" (click)="selectedOpeningIdx = recommended.openings.indexOf(ro)" href="#" onclick="return false;">{{ro.openingName}}</a>
+                  </div>
+                              
+                  <ng-template #elseBlock><a style="margin-bottom: 10px; background-color: gainsboro; width: 170px; text-align: center;" (click)="selectedOpeningIdx = recommended.openings.indexOf(ro)"  href="#" onclick="return false;">{{ro.openingName}}</a></ng-template>
+
               </div>
-                          
-              <ng-template #elseBlock><a style="margin-bottom: 10px; background-color: gainsboro; width: 170px; text-align: center;" (click)="selectedOpeningIdx = recommended.openings.indexOf(ro)"  href="#" onclick="return false;">{{ro.openingName}}</a></ng-template>
-              
             </div>
           </div>
+          <div class="games-right-column" style="width: 65%;">
+            {{recommended.openings[selectedOpeningIdx].description}}
+          </div>
         </div>
-        <div class="games-right-column" style="width: 65%;">
-          {{recommended.openings[selectedOpeningIdx].description}}
-        </div>
-      </div>
-      <hr>
-      <div class="row" style="float: left; height: 220px;">
-        <div style="background-color: gainsboro; margin-right: 10px; text-align: center; height: 220px;" class="games-left-column">
-          <h2 style="width: 200px;">Books recommended for you ({{playerType}})</h2>
-        </div>
-        <div *ngFor="let rb of recommended.books" style="margin-left: 200px;">  
-          <div class="games-right-column" style="width: 25%;">
-            <a href={{recommended.books[recommended.books.indexOf(rb)].goodreadsLink}} target="_blank"><img width="50%" height="50%" src={{recommended.books[recommended.books.indexOf(rb)].goodreadsCoverPhotoLink}}>
-            </a>
-            {{recommended.books[recommended.books.indexOf(rb)].authorFullName}}<br>
-            "{{recommended.books[recommended.books.indexOf(rb)].title}}"<br>
+        <hr>
+        <div class="row" style="float: left; height: 220px;">
+          <div style="background-color: gainsboro; margin-right: 10px; text-align: center; height: 220px;" class="games-left-column">
+            <h2 style="width: 200px;">Books recommended for you ({{playerType}})</h2>
+          </div>
+          <div *ngFor="let rb of recommended.books" style="margin-left: 200px;">  
+            <div class="games-right-column" style="width: 25%;">
+              <a href={{recommended.books[recommended.books.indexOf(rb)].goodreadsLink}} target="_blank"><img width="50%" height="50%" src={{recommended.books[recommended.books.indexOf(rb)].goodreadsCoverPhotoLink}}>
+              </a>
+              {{recommended.books[recommended.books.indexOf(rb)].authorFullName}}<br>
+              "{{recommended.books[recommended.books.indexOf(rb)].title}}"<br>
+            </div>
+            
           </div>
           
         </div>
-        
       </div>
-    </div>
-    
+    </div>  
   </div>
   
 </div>

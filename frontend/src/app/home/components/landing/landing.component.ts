@@ -37,13 +37,15 @@ export class LandingComponent implements OnInit {
     }
     this.recommended = JSON.parse(localStorage.getItem('recommended'));
 
+
+    this.game = new Chess();
+    this.gameBoard = ChessBoard('gameBoard', this.boardConfig);
+
     if (this.recommended) {
       for (let i = 0; i < this.recommended.openings.length; i++) {
         this.recommended.openings[i].openingName = this.escapeUnicodeChars(this.recommended.openings[i].openingName);
         this.recommended.openings[i].description = this.escapeUnicodeChars(this.recommended.openings[i].description);
       }
-      this.game = new Chess();
-      this.gameBoard = ChessBoard('gameBoard', this.boardConfig);
 
       this.recommendedGames = this.recommended.chessGames;
       this.fillGamesForDisplay();
@@ -54,11 +56,12 @@ export class LandingComponent implements OnInit {
     } else {
       // display all games if test not yet completed
       this.chessGameService.findAll().subscribe((res: any) => {
-        this.recommendedGames = res._embedded.chessGames;
+        this.recommendedGames = res._embedded.chessGames.slice(0, 6);
         this.fillGamesForDisplay();
         this.setGame(this.recommendedGames[0], 0);
         this.selectedOpeningIdx = 0;
         this.selectedBookIdx = 0;
+        document.getElementById('leftColumnDiv').style.width = '100%';
       });
     }
   }

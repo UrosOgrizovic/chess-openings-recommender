@@ -40,6 +40,7 @@ public class SpamDetectionService {
         this.kieSession.getAgenda().getAgendaGroup("check-spam").setFocus();
         this.kieSession.insert(userEvent);
         this.kieSession.fireAllRules();
+        System.out.println(this.kieSession.getFactCount());
         return userEvent.isSpam();
     }
 
