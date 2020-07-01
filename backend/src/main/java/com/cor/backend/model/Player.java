@@ -1,9 +1,11 @@
 package com.cor.backend.model;
 
 import com.cor.backend.model.enums.PlayerType;
+import org.apache.poi.ss.formula.functions.Count;
 import org.apache.tools.ant.taskdefs.Move;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,26 +22,37 @@ public class Player {
     private List<String> chosenMoveTypes;
     @Column
     private PlayerType playerType;
-    @Column
-    private int aggressiveCount;
-    @Column
-    private int tacticalCount;
-    @Column
-    private int defensiveCount;
-    @Column
-    private int positionalCount;
+    @OneToOne
+    private CountItem aggressiveCount;
+    @OneToOne
+    private CountItem tacticalCount;
+    @OneToOne
+    private CountItem defensiveCount;
+    @OneToOne
+    private CountItem positionalCount;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Player() {
+        this.aggressiveCount = new CountItem(PlayerType.AGGRESSIVE, 0, this);
+        this.tacticalCount = new CountItem(PlayerType.TACTICAL, 0, this);
+        this.defensiveCount = new CountItem(PlayerType.DEFENSIVE, 0, this);
+        this.positionalCount = new CountItem(PlayerType.POSITIONAL, 0, this);
     }
 
     public Player(List<String> chosenMoveTypes, PlayerType playerType) {
         this.chosenMoveTypes = chosenMoveTypes;
         this.playerType = playerType;
-        this.aggressiveCount = 0;
-        this.tacticalCount = 0;
-        this.defensiveCount = 0;
-        this.positionalCount = 0;
+        this.aggressiveCount = new CountItem(PlayerType.AGGRESSIVE, 0, this);
+        this.tacticalCount = new CountItem(PlayerType.TACTICAL, 0, this);
+        this.defensiveCount = new CountItem(PlayerType.DEFENSIVE, 0, this);
+        this.positionalCount = new CountItem(PlayerType.POSITIONAL, 0, this);
     }
 
     public void setChosenMoveTypes(List<String> chosenMoveTypes) {
@@ -58,50 +71,55 @@ public class Player {
         return playerType;
     }
 
-    public void setAggressiveCount(int aggressiveCount) {
-        this.aggressiveCount = aggressiveCount;
-    }
-
-    public void setTacticalCount(int tacticalCount) {
-        this.tacticalCount = tacticalCount;
-    }
-
-    public void setDefensiveCount(int defensiveCount) {
-        this.defensiveCount = defensiveCount;
-    }
-
-    public void setPositionalCount(int positionalCount) {
-        this.positionalCount = positionalCount;
-    }
-
-    public int getAggressiveCount() {
+    public CountItem getAggressiveCount() {
         return aggressiveCount;
     }
 
-    public int getTacticalCount() {
+    public void setAggressiveCountValue(int aggressiveCountValue) {
+        this.aggressiveCount.setCount(aggressiveCountValue);
+    }
+
+    public CountItem getTacticalCount() {
         return tacticalCount;
     }
 
-    public int getDefensiveCount() {
+    public void setTacticalCountValue(int tacticalCountValue) {
+        this.tacticalCount.setCount(tacticalCountValue);
+    }
+
+    public CountItem getDefensiveCount() {
         return defensiveCount;
     }
 
-    public int getPositionalCount() {
+    public void setDefensiveCountValue(int defensiveCountValue) {
+        this.defensiveCount.setCount(defensiveCountValue);
+    }
+
+    public CountItem getPositionalCount() {
         return positionalCount;
     }
 
-    public String getMaxCount() {
+    public void setPositionalCountValue(int positionalCountValue) {
+        this.positionalCount.setCount(positionalCountValue);
+    }
 
-        int maxValue = Collections.max(Arrays.asList(this.aggressiveCount, this.defensiveCount, this.positionalCount,
-                this.tacticalCount));
-        if (maxValue == this.defensiveCount)
-            return "DEFENSIVE";
-        else if (maxValue == this.aggressiveCount)
-            return "AGGRESSIVE";
-        else if (maxValue == this.tacticalCount)
-            return "TACTICAL";
-        else
-            return "POSITIONAL";
+    public List<CountItem> getCountItems() {
+        List<CountItem> countItems = new ArrayList<>();
+        countItems.add(this.aggressiveCount);
+        countItems.add(this.tacticalCount);
+        countItems.add(this.positionalCount);
+        countItems.add(this.defensiveCount);
+        return countItems;
+    }
 
+    public CountItem getMaxCountItem() {
+        List<CountItem> countItems = getCountItems();
+        CountItem maxCI = new CountItem();
+        for (CountItem ci : countItems) {
+            if (ci.getCount() > maxCI.getCount()) {
+                maxCI = ci;
+            }
+        }
+        return maxCI;
     }
 }

@@ -41,8 +41,11 @@ public class PlayerTypeService {
         
         kieSession.insert(this.recommendedService);
 
+
         kieSession.fireAllRules();
         kieSession.dispose();
+
+        System.out.println("Player type: " + p.getPlayerType());
 
         return pdto.getRecommended();
     }

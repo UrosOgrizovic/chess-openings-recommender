@@ -8,7 +8,7 @@
 
       <div class="row" style="background-color: gainsboro;">
         <div style="background-color: gainsboro; margin-right: 20px; text-align: center;" class="games-left-column">
-          <h2>Games recommended for you {{'(' + playerType + ')' ? playerType : ''}}</h2>
+          <h2>Games recommended for you {{playerType ? '(' + playerType + ')': ''}}</h2>
           <hr>
           <div *ngFor="let rg of recommendedGamesDisplay">
             <div *ngIf="selectedGameIdx === recommendedGamesDisplay.indexOf(rg) else elseBlock">

@@ -1,19 +1,21 @@
 package drools.rules;
 
 import com.cor.backend.model.Player;
+import com.cor.backend.model.CountItem;
 import com.cor.backend.model.enums.PlayerType;
 import java.util.Collections;
+import java.util.List;
 
 
 
 agenda-group "player-type"
 
 rule "Determine player type" salience -1
-    no-loop
+    lock-on-active
     when
         $p: Player()
     then
-        $p.setPlayerType(PlayerType.valueOf($p.getMaxCount()));
+        $p.setPlayerType($p.getMaxCountItem().getPlayerType());
         update($p);
 end
 
@@ -21,17 +23,26 @@ rule "Increment aggressive count"
     no-loop
     when
         $p: Player();
+        $numAggressive: Number() from accumulate (
+            String( toString == "AGGRESSIVE") from $p.getChosenMoveTypes(),
+            count("AGGRESSIVE")
+        )
     then
-        $p.setAggressiveCount(Collections.frequency($p.getChosenMoveTypes(), "AGGRESSIVE"));
+        $p.setAggressiveCountValue($numAggressive.intValue());
         update($p);
+
 end
 
 rule "Increment tactical count"
     no-loop
     when
         $p: Player();
+        $numTactical: Number() from accumulate (
+            String( toString == "TACTICAL") from $p.getChosenMoveTypes(),
+            count("TACTICAL")
+        )
     then
-        $p.setTacticalCount(Collections.frequency($p.getChosenMoveTypes(), "TACTICAL"));
+        $p.setTacticalCountValue($numTactical.intValue());
         update($p);
 end
 
@@ -39,8 +50,12 @@ rule "Increment positional count"
     no-loop
     when
         $p: Player();
+        $numPositional: Number() from accumulate (
+            String( toString == "POSITIONAL") from $p.getChosenMoveTypes(),
+            count("POSITIONAL")
+        )
     then
-        $p.setPositionalCount(Collections.frequency($p.getChosenMoveTypes(), "POSITIONAL"));
+        $p.setPositionalCountValue($numPositional.intValue());
         update($p);
 end
 
@@ -48,7 +63,11 @@ rule "Increment defensive count"
     no-loop
     when
         $p: Player();
+        $numDefensive: Number() from accumulate (
+            String( toString == "DEFENSIVE") from $p.getChosenMoveTypes(),
+            count("DEFENSIVE")
+        )
     then
-        $p.setDefensiveCount(Collections.frequency($p.getChosenMoveTypes(), "DEFENSIVE"));
+        $p.setDefensiveCountValue($numDefensive.intValue());
         update($p);
 end
