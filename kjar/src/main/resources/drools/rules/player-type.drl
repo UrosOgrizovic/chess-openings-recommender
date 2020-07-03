@@ -10,7 +10,9 @@ import java.util.List;
 
 agenda-group "player-type"
 
-rule "Determine player type" salience -1
+/* this rule is now useless due to dynamic salience, but was left
+here for demonstration purposes
+rule "Determine player type"
     lock-on-active
     when
         $p: Player()
@@ -18,56 +20,64 @@ rule "Determine player type" salience -1
         $p.setPlayerType($p.getMaxCountItem().getPlayerType());
         update($p);
 end
+*/
 
 rule "Increment aggressive count"
+    salience $numAggressive
     no-loop
     when
-        $p: Player();
+        $p: Player(playerType == null);
         $numAggressive: Number() from accumulate (
             String( toString == "AGGRESSIVE") from $p.getChosenMoveTypes(),
             count("AGGRESSIVE")
         )
     then
         $p.setAggressiveCountValue($numAggressive.intValue());
+        $p.setPlayerType(PlayerType.AGGRESSIVE);
         update($p);
-
 end
 
 rule "Increment tactical count"
+    salience $numTactical
     no-loop
     when
-        $p: Player();
+        $p: Player(playerType == null);
         $numTactical: Number() from accumulate (
             String( toString == "TACTICAL") from $p.getChosenMoveTypes(),
             count("TACTICAL")
         )
     then
         $p.setTacticalCountValue($numTactical.intValue());
+        $p.setPlayerType(PlayerType.TACTICAL);
         update($p);
 end
 
 rule "Increment positional count"
+    salience $numPositional
     no-loop
     when
-        $p: Player();
+        $p: Player(playerType == null);
         $numPositional: Number() from accumulate (
             String( toString == "POSITIONAL") from $p.getChosenMoveTypes(),
             count("POSITIONAL")
         )
     then
         $p.setPositionalCountValue($numPositional.intValue());
+        $p.setPlayerType(PlayerType.POSITIONAL);
         update($p);
 end
 
 rule "Increment defensive count"
+    salience $numDefensive
     no-loop
     when
-        $p: Player();
+        $p: Player(playerType == null);
         $numDefensive: Number() from accumulate (
             String( toString == "DEFENSIVE") from $p.getChosenMoveTypes(),
             count("DEFENSIVE")
         )
     then
         $p.setDefensiveCountValue($numDefensive.intValue());
+        $p.setPlayerType(PlayerType.DEFENSIVE);
         update($p);
 end
