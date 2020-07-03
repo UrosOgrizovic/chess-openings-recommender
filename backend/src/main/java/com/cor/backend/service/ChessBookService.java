@@ -14,6 +14,10 @@ public class ChessBookService {
     @Autowired
     private ChessBookRepository chessBookRepository;
 
+    public List<ChessBook> findAll() {
+        return this.chessBookRepository.findAll();
+    }
+
     public List<ChessBook> findAllForPlayerType(PlayerType playerType) {
         return this.chessBookRepository.findAllForPlayerType(playerType);
     }

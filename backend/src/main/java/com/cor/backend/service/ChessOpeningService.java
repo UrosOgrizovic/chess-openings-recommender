@@ -16,4 +16,8 @@ public class ChessOpeningService {
     public List<ChessOpening> findAllForPlayerType(PlayerType playerType) {
         return this.chessOpeningRepository.findAllForPlayerType(playerType);
     }
+
+    public List<ChessOpening> findAll() {
+        return this.chessOpeningRepository.findAll();
+    }
 }

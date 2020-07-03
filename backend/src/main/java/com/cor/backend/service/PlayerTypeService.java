@@ -1,8 +1,6 @@
 package com.cor.backend.service;
 
-import com.cor.backend.model.Player;
-import com.cor.backend.model.PlayerPreferences;
-import com.cor.backend.model.Recommended;
+import com.cor.backend.model.*;
 import com.cor.backend.model.dto.DeterminePlayerTypeDTO;
 import com.cor.backend.model.dto.PlayerDTO;
 import com.cor.backend.model.enums.PlayerDifficulty;
@@ -24,6 +22,15 @@ public class PlayerTypeService {
     @Autowired
     private RecommendedService recommendedService;
 
+    @Autowired
+    private ChessBookService chessBookService;
+
+    @Autowired
+    private ChessOpeningService chessOpeningService;
+
+    @Autowired
+    private ChessGameService chessGameService;
+
     public Recommended fireDroolsRulesMoves(DeterminePlayerTypeDTO determinePlayerTypeDTO) {
 
         Player p = new Player();
@@ -38,8 +45,16 @@ public class PlayerTypeService {
         pdto.setPlayerType(p.getPlayerType());
         kieSession.getAgenda().getAgendaGroup("recommended-for-player-type").setFocus();
         kieSession.insert(pdto);
-        
+
+        List<ChessBook> allChessBooks = this.chessBookService.findAll();
+        List<ChessOpening> allChessOpenings = this.chessOpeningService.findAll();
+        List<ChessGame> allChessGames = this.chessGameService.findAll();
+
+        kieSession.setGlobal("allChessBooks", allChessBooks);
+        kieSession.setGlobal("allChessOpenings", allChessOpenings);
+        kieSession.setGlobal("allChessGames", allChessGames);
         kieSession.insert(this.recommendedService);
+        kieSession.insert(new Recommended());
 
 
         kieSession.fireAllRules();

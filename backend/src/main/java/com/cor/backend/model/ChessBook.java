@@ -19,6 +19,7 @@ public class ChessBook {
     private String goodreadsLink;
     @Column
     private PlayerType bookType;
+
     @Column(name="goodreads_cover_photo_link")
     private String goodreadsCoverPhotoLink;
 
@@ -93,5 +94,10 @@ public class ChessBook {
 
     public void setGoodreadsLink(String goodreadsLink) {
         this.goodreadsLink = goodreadsLink;
+    }
+
+    @Override
+    public String toString() {
+        return "ChessBook: " + authorFullName + " " + title + " " + bookType + " " + bookDifficulty;
     }
 }

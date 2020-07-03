@@ -1,20 +1,36 @@
 package drools.rules;
 
 import com.cor.backend.model.dto.PlayerDTO;
+import com.cor.backend.model.ChessBook;
+import com.cor.backend.model.ChessGame;
+import com.cor.backend.model.ChessOpening;
+import com.cor.backend.model.Recommended;
 import com.cor.backend.service.RecommendedService;
 import com.cor.backend.model.enums.PlayerDifficulty;
 import java.util.ArrayList;
 
-global java.util.ArrayList bookTitles;
+global java.util.ArrayList allChessBooks;
+global java.util.ArrayList allChessGames;
+global java.util.ArrayList allChessOpenings;
 
 agenda-group "recommended-for-player-type"
 
-rule "Initialize bookTitles" salience 100
-    no-loop
-    when
-    then
-        bookTitles = new ArrayList();
-        drools.getWorkingMemory().setGlobal("bookTitles", bookTitles);
+query getBooksForTypeAndDifficulty(List $books, PlayerType $bookType, PlayerDifficulty $bookDifficulty)
+    $books:= List() from accumulate($cb: ChessBook(bookType == $bookType, bookDifficulty == $bookDifficulty) from allChessBooks,
+        collectList($cb)
+    )
+end
+
+query getGamesForType(List $games, PlayerType $gameType)
+    $games:= List() from accumulate($cg: ChessGame(gameType == $gameType) from allChessGames,
+        collectList($cg)
+    )
+end
+
+query getOpeningsForType(List $openings, PlayerType $openingType)
+    $openings:= List() from accumulate($co: ChessOpening(openingType == $openingType) from allChessOpenings,
+        collectList($co)
+    )
 end
 
 rule "Set beginner aggressive recommended"
@@ -22,11 +38,15 @@ rule "Set beginner aggressive recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.AGGRESSIVE && playerDifficulty == PlayerDifficulty.BEGINNER);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.AGGRESSIVE, PlayerDifficulty.BEGINNER;)
+        getGamesForType($games, PlayerType.AGGRESSIVE;)
+        getOpeningsForType($openings, PlayerType.AGGRESSIVE;)
+        $r: Recommended()
     then
-        bookTitles.add("The Life and Games of Mikhail Tal");
-        bookTitles.add("How to Attack in Chess");
-        bookTitles.add("Winning Chess Combinations");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.AGGRESSIVE, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
 
@@ -35,11 +55,15 @@ rule "Set beginner tactical recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.TACTICAL && playerDifficulty == PlayerDifficulty.BEGINNER);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.TACTICAL, PlayerDifficulty.BEGINNER;)
+        getGamesForType($games, PlayerType.TACTICAL;)
+        getOpeningsForType($openings, PlayerType.TACTICAL;)
+        $r: Recommended()
     then
-        bookTitles.add("Winning Chess Combinations");
-        bookTitles.add("Bobby Fischer Teaches Chess");
-        bookTitles.add("A First Book of Morphy");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.TACTICAL, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
 
@@ -48,11 +72,15 @@ rule "Set beginner defensive recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.DEFENSIVE && playerDifficulty == PlayerDifficulty.BEGINNER);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.DEFENSIVE, PlayerDifficulty.BEGINNER;)
+        getGamesForType($games, PlayerType.DEFENSIVE;)
+        getOpeningsForType($openings, PlayerType.DEFENSIVE;)
+        $r: Recommended()
     then
-        bookTitles.add("The Art of Defence in Chess");
-        bookTitles.add("The Art of Positional Play");
-        bookTitles.add("Bobby Fischer Teaches Chess");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.DEFENSIVE, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
 
@@ -61,11 +89,15 @@ rule "Set beginner positional recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.POSITIONAL && playerDifficulty == PlayerDifficulty.BEGINNER);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.POSITIONAL, PlayerDifficulty.BEGINNER;)
+        getGamesForType($games, PlayerType.POSITIONAL;)
+        getOpeningsForType($openings, PlayerType.POSITIONAL;)
+        $r: Recommended()
     then
-        bookTitles.add("Winning Chess Combinations");
-        bookTitles.add("The Art of Positional Play");
-        bookTitles.add("My System");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.POSITIONAL, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
 
@@ -74,11 +106,15 @@ rule "Set intermediate aggressive recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.AGGRESSIVE && playerDifficulty == PlayerDifficulty.INTERMEDIATE);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.AGGRESSIVE, PlayerDifficulty.INTERMEDIATE;)
+        getGamesForType($games, PlayerType.AGGRESSIVE;)
+        getOpeningsForType($openings, PlayerType.AGGRESSIVE;)
+        $r: Recommended()
     then
-        bookTitles.add("The Life and Games of Mikhail Tal");
-        bookTitles.add("Endgame Strategy");
-        bookTitles.add("How to Reassess Your Chess: The Complete Chess Mastery Course");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.AGGRESSIVE, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
 
@@ -87,11 +123,15 @@ rule "Set intermediate tactical recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.TACTICAL && playerDifficulty == PlayerDifficulty.INTERMEDIATE);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.TACTICAL, PlayerDifficulty.INTERMEDIATE;)
+        getGamesForType($games, PlayerType.TACTICAL;)
+        getOpeningsForType($openings, PlayerType.TACTICAL;)
+        $r: Recommended()
     then
-        bookTitles.add("How to Attack in Chess");
-        bookTitles.add("Chess Training Pocket Book: 300 Most Important Positions and Ideas");
-        bookTitles.add("Chess Tactics for Advanced Players");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.TACTICAL, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
 
@@ -100,11 +140,15 @@ rule "Set intermediate defensive recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.DEFENSIVE && playerDifficulty == PlayerDifficulty.INTERMEDIATE);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.DEFENSIVE, PlayerDifficulty.INTERMEDIATE;)
+        getGamesForType($games, PlayerType.DEFENSIVE;)
+        getOpeningsForType($openings, PlayerType.DEFENSIVE;)
+        $r: Recommended()
     then
-        bookTitles.add("The Art of Defence in Chess");
-        bookTitles.add("Secrets of Chess Defence");
-        bookTitles.add("Endgame Strategy");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.DEFENSIVE, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
 
@@ -113,11 +157,15 @@ rule "Set intermediate positional recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.POSITIONAL && playerDifficulty == PlayerDifficulty.INTERMEDIATE);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.POSITIONAL, PlayerDifficulty.INTERMEDIATE;)
+        getGamesForType($games, PlayerType.POSITIONAL;)
+        getOpeningsForType($openings, PlayerType.POSITIONAL;)
+        $r: Recommended()
     then
-        bookTitles.add("My System");
-        bookTitles.add("How to Reassess Your Chess: The Complete Chess Mastery Course");
-        bookTitles.add("Chess Strategy for Club Players");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.POSITIONAL, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
 
@@ -126,11 +174,15 @@ rule "Set advanced aggressive recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.AGGRESSIVE && playerDifficulty == PlayerDifficulty.ADVANCED);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.AGGRESSIVE, PlayerDifficulty.ADVANCED;)
+        getGamesForType($games, PlayerType.AGGRESSIVE;)
+        getOpeningsForType($openings, PlayerType.AGGRESSIVE;)
+        $r: Recommended()
     then
-        bookTitles.add("Endgame Strategy");
-        bookTitles.add("Dvoretsky's Endgame Manual");
-        bookTitles.add("Attacking Manual Volume 1");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.AGGRESSIVE, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
 
@@ -139,11 +191,15 @@ rule "Set advanced tactical recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.TACTICAL && playerDifficulty == PlayerDifficulty.ADVANCED);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.TACTICAL, PlayerDifficulty.ADVANCED;)
+        getGamesForType($games, PlayerType.TACTICAL;)
+        getOpeningsForType($openings, PlayerType.TACTICAL;)
+        $r: Recommended()
     then
-        bookTitles.add("Chess Tactics for Advanced Players");
-        bookTitles.add("Dvoretsky's Endgame Manual");
-        bookTitles.add("Endgame Strategy");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.TACTICAL, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
 
@@ -152,11 +208,15 @@ rule "Set advanced defensive recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.DEFENSIVE && playerDifficulty == PlayerDifficulty.ADVANCED);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.DEFENSIVE, PlayerDifficulty.ADVANCED;)
+        getGamesForType($games, PlayerType.DEFENSIVE;)
+        getOpeningsForType($openings, PlayerType.DEFENSIVE;)
+        $r: Recommended()
     then
-        bookTitles.add("Endgame Strategy");
-        bookTitles.add("Secrets of Chess Defence");
-        bookTitles.add("Dvoretsky's Endgame Manual");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.DEFENSIVE, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
 
@@ -165,10 +225,14 @@ rule "Set advanced positional recommended"
     when
         $pdto: PlayerDTO(playerType == PlayerType.POSITIONAL && playerDifficulty == PlayerDifficulty.ADVANCED);
         $recommendedService: RecommendedService();
+        getBooksForTypeAndDifficulty($books, PlayerType.POSITIONAL, PlayerDifficulty.ADVANCED;)
+        getGamesForType($games, PlayerType.POSITIONAL;)
+        getOpeningsForType($openings, PlayerType.POSITIONAL;)
+        $r: Recommended()
     then
-        bookTitles.add("Positional Chess Handbook");
-        bookTitles.add("Dvoretsky's Endgame Manual");
-        bookTitles.add("The Complete Manual of Positional Chess: Opening and Middlegame");
-        $pdto.setRecommended($recommendedService.getRecommendedForPlayerType(PlayerType.POSITIONAL, bookTitles));
+        $r.setGames($games);
+        $r.setChessBooks($books);
+        $r.setChessOpenings($openings);
+        $pdto.setRecommended($r);
         update($pdto);
 end
