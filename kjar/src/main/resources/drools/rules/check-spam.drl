@@ -5,6 +5,10 @@ import com.cor.backend.model.UserEvent;
 
 agenda-group "check-spam"
 
+declare window TimeWindow
+	UserEvent() over window:time(1h)
+end
+
 rule "More than 5 tests requested in less than 1 hour"
     no-loop
     lock-on-active true
@@ -12,9 +16,8 @@ rule "More than 5 tests requested in less than 1 hour"
         $ue1: UserEvent();
         Number(intValue >= 5) from accumulate(
             $ue2: UserEvent(
-                this != $ue1,
-                this meets[1h] $ue1
-            ),
+                this != $ue1
+            ) from window TimeWindow,
             count($ue2)
         );
     then
