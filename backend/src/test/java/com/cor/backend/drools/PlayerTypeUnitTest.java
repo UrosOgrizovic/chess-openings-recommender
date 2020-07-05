@@ -49,25 +49,25 @@ public class PlayerTypeUnitTest {
     @Test
     public void incrementAggressiveCount() {
         this.kieSession.fireAllRules(new RuleNameEqualsAgendaFilter("Increment aggressive count"));
-        assertEquals(1, this.p.getAggressiveCount());
+        assertEquals(1, this.p.getAggressiveCount().getCount());
     }
 
     @Test
     public void incrementPositionalCount() {
         this.kieSession.fireAllRules(new RuleNameEqualsAgendaFilter("Increment positional count"));
-        assertEquals(2, this.p.getPositionalCount());
+        assertEquals(2, this.p.getPositionalCount().getCount());
     }
 
     @Test
     public void incrementTacticalCount() {
         this.kieSession.fireAllRules(new RuleNameEqualsAgendaFilter("Increment tactical count"));
-        assertEquals(1, this.p.getTacticalCount());
+        assertEquals(1, this.p.getTacticalCount().getCount());
     }
 
     @Test
     public void incrementDefensiveCount() {
         this.kieSession.fireAllRules(new RuleNameEqualsAgendaFilter("Increment defensive count"));
-        assertEquals(1, this.p.getDefensiveCount());
+        assertEquals(1, this.p.getDefensiveCount().getCount());
     }
 
     @Test
